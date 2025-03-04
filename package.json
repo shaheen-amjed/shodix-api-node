@@ -1,5 +1,5 @@
 {
-  "name": "shodix-api",
+  "name": "shodix api",
   "version": "1.0.0",
   "description": "shodix api",
   "main": "server.js",
@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.0",
     "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6",
     "multer": "^1.4.5-lts.1",
     "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
