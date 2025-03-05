@@ -67,6 +67,7 @@ const JWT_SECRET = "shodixSecretKey2024";
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: '/tmp/shodix.sqlite',
+  dialectModule: require('better-sqlite3'),
   logging: false
 });
 
