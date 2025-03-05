@@ -1,0 +1,112 @@
+/* Custom Styles for Shodix API Documentation */
+
+/* Base Styles */
+body {
+    line-height: 1.6;
+}
+
+/* Navigation Links */
+.nav-link {
+    display: block;
+    padding: 0.5rem 0;
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-radius: 0.25rem;
+    padding-left: 0.5rem;
+}
+
+.nav-link:hover {
+    color: #4f46e5;
+    background-color: #f3f4f6;
+}
+
+/* Endpoint Cards */
+.endpoint-card {
+    display: flex;
+    align-items: center;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    width: fit-content;
+}
+
+.endpoint-method {
+    color: white;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+.endpoint-path {
+    padding: 0.25rem 0.75rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+    background-color: #f9fafb;
+}
+
+/* Endpoint Sections */
+.endpoint-section {
+    margin-bottom: 2rem;
+}
+
+/* Code Blocks */
+pre[class*="language-"] {
+    margin: 0;
+    border-radius: 0.375rem;
+}
+
+code[class*="language-"] {
+    font-size: 0.875rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
+
+/* Mobile Menu Animation */
+#mobile-menu {
+    transition: max-height 0.3s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobile-menu.open {
+    max-height: 300px;
+}
+
+/* Active Navigation Link */
+.nav-link.active {
+    color: #4f46e5;
+    background-color: #eff6ff;
+    font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .endpoint-card {
+        width: 100%;
+    }
+    
+    pre[class*="language-"] {
+        font-size: 0.75rem;
+    }
+}
