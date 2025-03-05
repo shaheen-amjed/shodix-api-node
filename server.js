@@ -65,11 +65,20 @@ const JWT_SECRET = "shodixSecretKey2024";
 
 // Initialize Sequelize with SQLite
 const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './shodix.sqlite',
-  logging: false
+  dialect: 'mysql', // Use 'mysql' for TiDB (MySQL-compatible)
+  host: 'gateway01.eu-central-1.prod.aws.tidbcloud.com', // Host
+  port: 4000, // Port
+  username: 'SAFbYDGRTjNb3dp.root', // Username
+  password: 'CtM90sZgcvXgX5m7', // Password
+  database: 'test', // Database name
+  dialectModule: require('mysql2'), // Use mysql2 as the dialect module
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: true, // Enable SSL (if required by TiDB Cloud)
+    },
+  },
+  logging: false, // Disable logging (or set to `console.log` for debugging)
 });
-
 // Define models
 const Follow = sequelize.define('Follow', {
   id: {
