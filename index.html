@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shodix API Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.30.0/tabler-icons.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <h1 class="text-xl font-bold text-gray-900">Shodix API</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#introduction" class="text-gray-600 hover:text-indigo-600 transition-colors">Introduction</a>
+                <a href="#authentication" class="text-gray-600 hover:text-indigo-600 transition-colors">Authentication</a>
+                <a href="#endpoints" class="text-gray-600 hover:text-indigo-600 transition-colors">Endpoints</a>
+                <a href="#models" class="text-gray-600 hover:text-indigo-600 transition-colors">Models</a>
+                <a href="#websockets" class="text-gray-600 hover:text-indigo-600 transition-colors">WebSockets</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="container mx-auto px-4 py-2 space-y-2">
+                <a href="#introduction" class="block text-gray-600 hover:text-indigo-600 transition-colors">Introduction</a>
+                <a href="#authentication" class="block text-gray-600 hover:text-indigo-600 transition-colors">Authentication</a>
+                <a href="#endpoints" class="block text-gray-600 hover:text-indigo-600 transition-colors">Endpoints</a>
+                <a href="#models" class="block text-gray-600 hover:text-indigo-600 transition-colors">Models</a>
+                <a href="#websockets" class="block text-gray-600 hover:text-indigo-600 transition-colors">WebSockets</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Shodix API Documentation</h1>
+            <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">A comprehensive guide to integrating with the Shodix e-commerce platform</p>
+            <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
+                <a href="#endpoints" class="bg-white text-indigo-600 hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg transition-colors">
+                    Explore API Endpoints
+                </a>
+                <a href="#getting-started" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-indigo-600 font-semibold py-3 px-6 rounded-lg transition-colors">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <aside class="md:w-64 lg:w-72 shrink-0">
+                <div class="sticky top-24 bg-white rounded-lg shadow-md p-4">
+                    <nav class="space-y-1">
+                        <p class="text-xs uppercase text-gray-500 font-semibold mb-2 mt-4">Getting Started</p>
+                        <a href="#introduction" class="nav-link">Introduction</a>
+                        <a href="#getting-started" class="nav-link">Getting Started</a>
+                        <a href="#authentication" class="nav-link">Authentication</a>
+                        
+                        <p class="text-xs uppercase text-gray-500 font-semibold mb-2 mt-4">API Reference</p>
+                        <a href="#endpoints" class="nav-link">Endpoints Overview</a>
+                        <a href="#user-endpoints" class="nav-link pl-6">User Endpoints</a>
+                        <a href="#store-endpoints" class="nav-link pl-6">Store Endpoints</a>
+                        <a href="#product-endpoints" class="nav-link pl-6">Product Endpoints</a>
+                        <a href="#cart-endpoints" class="nav-link pl-6">Cart Endpoints</a>
+                        <a href="#order-endpoints" class="nav-link pl-6">Order Endpoints</a>
+                        <a href="#message-endpoints" class="nav-link pl-6">Message Endpoints</a>
+                        <a href="#follow-endpoints" class="nav-link pl-6">Follow Endpoints</a>
+                        
+                        <p class="text-xs uppercase text-gray-500 font-semibold mb-2 mt-4">Data Models</p>
+                        <a href="#models" class="nav-link">Data Models</a>
+                        <a href="#user-model" class="nav-link pl-6">User Model</a>
+                        <a href="#store-model" class="nav-link pl-6">Store Model</a>
+                        <a href="#product-model" class="nav-link pl-6">Product Model</a>
+                        <a href="#cart-model" class="nav-link pl-6">Cart Model</a>
+                        <a href="#order-model" class="nav-link pl-6">Order Model</a>
+                        <a href="#chat-model" class="nav-link pl-6">Chat Model</a>
+                        <a href="#message-model" class="nav-link pl-6">Message Model</a>
+                        <a href="#follow-model" class="nav-link pl-6">Follow Model</a>
+                        
+                        <p class="text-xs uppercase text-gray-500 font-semibold mb-2 mt-4">Real-time Features</p>
+                        <a href="#websockets" class="nav-link">WebSockets</a>
+                        <a href="#chat-integration" class="nav-link pl-6">Chat Integration</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1">
+                <!-- Introduction Section -->
+                <section id="introduction" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Introduction</h2>
+                    <p class="mb-4">
+                        The Shodix API is a RESTful API that allows developers to integrate with the Shodix e-commerce platform. 
+                        This API provides endpoints for managing users, stores, products, carts, orders, and messaging.
+                    </p>
+                    <p class="mb-4">
+                        The API is built using Express.js and uses JWT for authentication. It also provides real-time messaging capabilities using Socket.io.
+                    </p>
+                    <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded">
+                        <h3 class="font-semibold text-indigo-800">Base URL</h3>
+                        <p class="text-indigo-700 font-mono mt-1">http://localhost:3001</p>
+                    </div>
+                </section>
+
+                <!-- Getting Started Section -->
+                <section id="getting-started" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Getting Started</h2>
+                    <p class="mb-4">
+                        To get started with the Shodix API, you'll need to:
+                    </p>
+                    <ol class="list-decimal pl-6 mb-6 space-y-2">
+                        <li>Set up the server by installing the required dependencies</li>
+                        <li>Start the server on port 3001 (default)</li>
+                        <li>Register a user or store account</li>
+                        <li>Authenticate and obtain a JWT token</li>
+                        <li>Use the token to access protected endpoints</li>
+                    </ol>
+
+                    <h3 class="text-xl font-semibold mb-3">Installation</h3>
+                    <div class="bg-gray-800 rounded-lg p-4 mb-6">
+                        <pre class="language-bash"><code>npm install express cors jsonwebtoken sequelize sqlite3 multer socket.io bcrypt</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3">Starting the Server</h3>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <pre class="language-bash"><code>node server.js</code></pre>
+                    </div>
+                </section>
+
+                <!-- Authentication Section -->
+                <section id="authentication" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Authentication</h2>
+                    <p class="mb-4">
+                        The Shodix API uses JSON Web Tokens (JWT) for authentication. To access protected endpoints, you need to include the JWT token in the Authorization header.
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-3">Obtaining a Token</h3>
+                    <p class="mb-4">
+                        You can obtain a token by logging in as a user or store:
+                    </p>
+
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-700 mb-2">User Login</h4>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/user/log</div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4 mt-3">
+                            <pre class="language-json"><code>{
+  "username": "your_username",
+  "password": "your_password"
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-700 mb-2">Store Login</h4>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/store/log</div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4 mt-3">
+                            <pre class="language-json"><code>{
+  "store_name": "your_store_name",
+  "password": "your_password"
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-3">Using the Token</h3>
+                    <p class="mb-4">
+                        Include the token in the Authorization header for all protected requests:
+                    </p>
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <pre class="language-javascript"><code>// Example using fetch
+fetch('/api/cart', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer YOUR_JWT_TOKEN',
+    'Content-Type': 'application/json'
+  }
+})</code></pre>
+                    </div>
+                </section>
+
+                <!-- Endpoints Overview Section -->
+                <section id="endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">API Endpoints</h2>
+                    <p class="mb-6">
+                        The Shodix API provides the following categories of endpoints:
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <a href="#user-endpoints" class="block p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg border border-indigo-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-indigo-800 mb-1">User Endpoints</h3>
+                            <p class="text-indigo-600 text-sm">Registration, login, and profile management</p>
+                        </a>
+                        <a href="#store-endpoints" class="block p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-purple-800 mb-1">Store Endpoints</h3>
+                            <p class="text-purple-600 text-sm">Store registration, login, and management</p>
+                        </a>
+                        <a href="#product-endpoints" class="block p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-blue-800 mb-1">Product Endpoints</h3>
+                            <p class="text-blue-600 text-sm">Product creation, updates, and retrieval</p>
+                        </a>
+                        <a href="#cart-endpoints" class="block p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-green-800 mb-1">Cart Endpoints</h3>
+                            <p class="text-green-600 text-sm">Shopping cart management</p>
+                        </a>
+                        <a href="#order-endpoints" class="block p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg border border-yellow-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-yellow-800 mb-1">Order Endpoints</h3>
+                            <p class="text-yellow-600 text-sm">Order placement and management</p>
+                        </a>
+                        <a href="#message-endpoints" class="block p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-lg border border-red-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-red-800 mb-1">Message Endpoints</h3>
+                            <p class="text-red-600 text-sm">Chat and messaging between users and stores</p>
+                        </a>
+                        <a href="#follow-endpoints" class="block p-4 bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg border border-pink-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-pink-800 mb-1">Follow Endpoints</h3>
+                            <p class="text-pink-600 text-sm">Following stores and followers management</p>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- User Endpoints Section -->
+                <section id="user-endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">User Endpoints</h2>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Register User</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-green-600">POST</div>
+                            <div class="endpoint-path">/api/user/reg</div>
+                        </div>
+                        <p class="my-3">Creates a new user account.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "username": "string",
+  "password": "string",
+  "full_location": "string"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "User created successfully! Please log in => <a href=\"/login\">Click here</a>"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Login User</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/user/log</div>
+                        </div>
+                        <p class="my-3">Authenticates a user and returns a JWT token.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "username": "string",
+  "password": "string"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Update User</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-yellow-600">PATCH</div>
+                            <div class="endpoint-path">/api/user/update</div>
+                        </div>
+                        <p class="my-3">Updates user information. Requires authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "username": "string", // optional
+  "password": "string", // optional
+  "full_location": "string" // optional
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Updated successfully!"
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Store Endpoints Section -->
+                <section id="store-endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Store Endpoints</h2>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Register Store</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-green-600">POST</div>
+                            <div class="endpoint-path">/api/store/reg</div>
+                        </div>
+                        <p class="my-3">Creates a new store account. Requires multipart/form-data for image upload.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body (multipart/form-data)</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>store_name: "string"
+password: "string"
+full_location: "string"
+bio: "string"
+storeImg: [file]</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Store created successfully!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Login Store</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/store/log</div>
+                        </div>
+                        <p class="my-3">Authenticates a store and returns a JWT token.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "store_name": "string",
+  "password": "string"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Update Store</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-yellow-600">PATCH</div>
+                            <div class="endpoint-path">/api/store/update</div>
+                        </div>
+                        <p class="my-3">Updates store information. Requires authentication and multipart/form-data for image upload.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body (multipart/form-data)</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>store_name: "string" // optional
+password: "string" // optional
+full_location: "string" // optional
+bio: "string" // optional
+storeImg: [file] // optional</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Updated successfully!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Store</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-indigo-600">GET</div>
+                            <div class="endpoint-path">/api/store/:store_name</div>
+                        </div>
+                        <p class="my-3">Retrieves store information by store name.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">URL Parameters</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>store_name: "string" // The name of the store to retrieve</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "store_id": 1,
+  "bio": "string",
+  "store_name": "string",
+  "full_location": "string",
+  "img": "/uploads/stores/filename.jpg"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Check Store Ownership</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/is/owner</div>
+                        </div>
+                        <p class="my-3">Checks if the authenticated user is the owner of a specific store. Requires authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "store_see": "string" // The name of the store to check ownership
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "yes" // or "no" depending on ownership
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Product Endpoints Section -->
+                <section id="product-endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Product Endpoints</h2>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Add Product</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-green-600">POST</div>
+                            <div class="endpoint-path">/api/product/add</div>
+                        </div>
+                        <p class="my-3">Creates a new product. Requires store authentication and multipart/form-data for image upload.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body (multipart/form-data)</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>name: "string"
+desc: "string"
+price: "number"
+stock: "number"
+country: "string"
+productImg: [file]</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Product created successfully"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Update Product</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-yellow-600">PATCH</div>
+                            <div class="endpoint-path">/api/product/update</div>
+                        </div>
+                        <p class="my-3">Updates product information. Requires store authentication and multipart/form-data for image upload.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body (multipart/form-data)</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>product_id: "number" // required
+name: "string" // optional
+desc: "string" // optional
+price: "number" // optional
+stock: "number" // optional
+country: "string" // optional
+productImg: [file] // optional</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Product updated successfully!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Delete Product</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-red-600">DELETE</div>
+                            <div class="endpoint-path">/api/product/delete</div>
+                        </div>
+                        <p class="my-3">Deletes a product. Requires store authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "product_id": "number"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Product deleted successfully!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Product</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-indigo-600">GET</div>
+                            <div class="endpoint-path">/api/product/:product_id</div>
+                        </div>
+                        <p class="my-3">Retrieves product information by product ID.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">URL Parameters</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>product_id: "number" // The ID of the product to retrieve</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "product_id": 1,
+  "store_id": 1,
+  "store_name": "string",
+  "country": "string",
+  "name": "string",
+  "desc": "string",
+  "price": 10.99,
+  "stock": 100,
+  "img": "/uploads/products/filename.jpg"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get All Products</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-indigo-600">GET</div>
+                            <div class="endpoint-path">/api/product/all</div>
+                        </div>
+                        <p class="my-3">Retrieves all products.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>[
+  {
+    "product_id": 1,
+    "store_id": 1,
+    "store_name": "string",
+    "country": "string",
+    "name": "string",
+    "desc": "string",
+    "price": 10.99,
+    "stock": 100,
+    "img": "/uploads/products/filename.jpg"
+  },
+  // More products...
+]</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Store Products</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-indigo-600">GET</div>
+                            <div class="endpoint-path">/api/product/store/:store_id</div>
+                        </div>
+                        <p class="my-3">Retrieves all products for a specific store.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">URL Parameters</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>store_id: "number" // The ID of the store to retrieve products for</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>[
+  {
+    "product_id": 1,
+    "store_id": 1,
+    "store_name": "string",
+    "country": "string",
+    "name": "string",
+    "desc": "string",
+    "price": 10.99,
+    "stock": 100,
+    "img": "/uploads/products/filename.jpg"
+  },
+  // More products...
+]</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cart Endpoints Section -->
+                <section id="cart-endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Cart Endpoints</h2>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Add to Cart</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-green-600">POST</div>
+                            <div class="endpoint-path">/api/cart/add</div>
+                        </div>
+                        <p class="my-3">Adds a product to the user's cart. Requires user authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "store_id": "number",
+  "store_name": "string",
+  "product_id": "number",
+  "quantity": "number", // optional, defaults to 1
+  "country": "string",
+  "full_location": "string",
+  "name": "string",
+  "price": "number",
+  "img": "string"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Product 'Product Name' added to cart successfully!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Update Cart</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-yellow-600">PATCH</div>
+                            <div class="endpoint-path">/api/cart/update</div>
+                        </div>
+                        <p class="my-3">Updates a cart item. Requires user authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "cart_id": "number",
+  "quantity": "number", // optional
+  "country": "string", // optional
+  "full_location": "string" // optional
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Cart information updated successfully!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Delete from Cart</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-red-600">DELETE</div>
+                            <div class="endpoint-path">/api/cart/delete</div>
+                        </div>
+                        <p class="my-3">Removes an item from the user's cart. Requires user authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "cart_id": "number"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Item deleted successfully"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Cart</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-indigo-600">GET</div>
+                            <div class="endpoint-path">/api/cart</div>
+                        </div>
+                        <p class="my-3">Retrieves the user's cart. Requires user authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>[
+  {
+    "cart_id": 1,
+    "price": 10.99,
+    "img": "/uploads/products/filename.jpg",
+    "user_id": 1,
+    "username": "string",
+    "country": "string",
+    "full_location": "string",
+    "store_name": "string",
+    "name": "string",
+    "product_id": 1,
+    "store_id": 1,
+    "quantity": 1
+  },
+  // More cart items...
+]</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Order Endpoints Section -->
+                <section id="order-endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Order Endpoints</h2>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Add Order</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-green-600">POST</div>
+                            <div class="endpoint-path">/api/order/add</div>
+                        </div>
+                        <p class="my-3">Places an order from a cart item. Requires user authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "quantity": "number",
+  "country": "string",
+  "full_location": "string",
+  "store_name": "string",
+  "product_id": "number",
+  "store_id": "number",
+  "cart_id": "number"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Order placed successfully"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Complete Order</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/order/done</div>
+                        </div>
+                        <p class="my-3">Marks an order as complete. Requires store authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "order_id": "number"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Thanks for completing this order, I hope everything was going well!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Store Orders</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/order/see</div>
+                        </div>
+                        <p class="my-3">Retrieves all orders for a store. Requires store authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>[
+  {
+    "order_id": 1,
+    "user_id": 1,
+    "username": "string",
+    "country": "string",
+    "full_location": "string",
+    "store_name": "string",
+    "product_id": 1,
+    "store_id": 1,
+    "quantity": 1
+  },
+  // More orders...
+]</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Message Endpoints Section -->
+                <section id="message-endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Message Endpoints</h2>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Messages</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-indigo-600">GET</div>
+                            <div class="endpoint-path">/api/msg/get/:store_and_:user</div>
+                        </div>
+                        <p class="my-3">Retrieves messages between a store and a user. Requires authentication as either the store or the user.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">URL Parameters</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>store: "string" // The name of the store
+user: "string" // The username of the user</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>[
+  {
+    "msg_id": 1,
+    "chat_id": 1,
+    "message": "string",
+    "timestamp": "2023-01-01T00:00:00.000Z"
+  },
+  // More messages...
+]</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Send Message</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-green-600">POST</div>
+                            <div class="endpoint-path">/api/msg/add/:store_and_:user</div>
+                        </div>
+                        <p class="my-3">Sends a message between a store and a user. Requires authentication as either the store or the user.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">URL Parameters</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>store: "string" // The name of the store
+user: "string" // The username of the user</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "msg": "string"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Sent successfully"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Inbox</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/api/inbox</div>
+                        </div>
+                        <p class="my-3">Retrieves the inbox for a user or store. Requires authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>[
+  {
+    "username": "string",
+    "store_name": "string"
+  },
+  // More chats...
+]</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Follow Endpoints Section -->
+                <section id="follow-endpoints" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Follow Endpoints</h2>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Follow Store</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-green-600">POST</div>
+                            <div class="endpoint-path">/api/follow</div>
+                        </div>
+                        <p class="my-3">Follows a store. Requires user authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "store_id": "number",
+  "store_name": "string"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "Followed!"
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Get Followers Count</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-indigo-600">GET</div>
+                            <div class="endpoint-path">/api/follow</div>
+                        </div>
+                        <p class="my-3">Retrieves the number of followers for a store.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Query Parameters</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>store_id: "number" // The ID of the store to get followers count for</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "followers_count": 42
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 my-8"></div>
+                    
+                    <div class="endpoint-section">
+                        <h3 class="text-xl font-semibold mb-3">Check Follow Status</h3>
+                        <div class="endpoint-card">
+                            <div class="endpoint-method bg-blue-600">POST</div>
+                            <div class="endpoint-path">/is/follow</div>
+                        </div>
+                        <p class="my-3">Checks if a user follows a store. Requires user authentication.</p>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Headers</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>Authorization: Bearer YOUR_JWT_TOKEN</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Request Body</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-json"><code>{
+  "store_id": "number"
+}</code></pre>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-700 mb-2">Response</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-json"><code>{
+  "msg": "followed" // or "Not followed"
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data Models Section -->
+                <section id="models" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Data Models</h2>
+                    <p class="mb-6">
+                        The Shodix API uses the following data models:
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <a href="#user-model" class="block p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg border border-indigo-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-indigo-800 mb-1">User Model</h3>
+                            <p class="text-indigo-600 text-sm">User account information</p>
+                        </a>
+                        <a href="#store-model" class="block p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-purple-800 mb-1">Store Model</h3>
+                            <p class="text-purple-600 text-sm">Store account information</p>
+                        </a>
+                        <a href="#product-model" class="block p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-blue-800 mb-1">Product Model</h3>
+                            <p class="text-blue-600 text-sm">Product information</p>
+                        </a>
+                        <a href="#cart-model" class="block p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-green-800 mb-1">Cart Model</h3>
+                            <p class="text-green-600 text-sm">Shopping cart items</p>
+                        </a>
+                        <a href="#order-model" class="block p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg border border-yellow-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-yellow-800 mb-1">Order Model</h3>
+                            <p class="text-yellow-600 text-sm">Order information</p>
+                        </a>
+                        <a href="#chat-model" class="block p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-lg border border-red-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-red-800 mb-1">Chat Model</h3>
+                            <p class="text-red-600 text-sm">Chat information</p>
+                        </a>
+                        <a href="#message-model" class="block p-4 bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg border border-pink-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-pink-800 mb-1">Message Model</h3>
+                            <p class="text-pink-600 text-sm">Message information</p>
+                        </a>
+                        <a href="#follow-model" class="block p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-lg border border-teal-200 hover:shadow-md transition-shadow">
+                            <h3 class="font-semibold text-teal-800 mb-1">Follow Model</h3>
+                            <p class="text-teal-600 text-sm">Follow relationship information</p>
+                        </a>
+                    </div>
+
+                    <!-- User Model -->
+                    <div id="user-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">User Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const User = sequelize.define('User', {
+  user_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  username: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  full_location: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Store Model -->
+                    <div id="store-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Store Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const Store = sequelize.define('Store', {
+  store_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  store_name: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  full_location: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  img: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  bio: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Product Model -->
+                    <div id="product-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Product Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const Product = sequelize.define('Product', {
+  product_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  store_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  store_name: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  desc: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  price: {
+    type: DataTypes.FLOAT,
+    allowNull: false
+  },
+  stock: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  country: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  img: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Cart Model -->
+                    <div id="cart-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Cart Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const Cart = sequelize.define('Cart', {
+  cart_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  price: {
+    type: DataTypes.FLOAT,
+    allowNull: false
+  },
+  img: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  username: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  country: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  full_location: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  store_name: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  product_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  store_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  quantity: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Order Model -->
+                    <div id="order-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Order Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const Order = sequelize.define('Order', {
+  order_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  username: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  country: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  full_location: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  store_name: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  product_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  store_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  quantity: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Chat Model -->
+                    <div id="chat-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Chat Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const Chat = sequelize.define('Chat', {
+  chat_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  user: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  store: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Message Model -->
+                    <div id="message-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Message Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const Messages = sequelize.define('Messages', {
+  msg_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  chat_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Chat,
+      key: 'chat_id'
+    }
+  },
+  msg: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  timestamp: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Follow Model -->
+                    <div id="follow-model" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Follow Model</h3>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>const Follow = sequelize.define('Follow', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  username: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  store_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  store_name: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  }
+}, {
+  timestamps: false
+});</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- WebSockets Section -->
+                <section id="websockets" class="mb-12 bg-white rounded-lg shadow-md p-6 md:p-8">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">WebSockets</h2>
+                    <p class="mb-4">
+                        The Shodix API uses Socket.io for real-time messaging between users and stores.
+                    </p>
+
+                    <div id="chat-integration" class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3">Chat Integration</h3>
+                        <p class="mb-4">
+                            To integrate with the real-time chat functionality, you need to:
+                        </p>
+
+                        <ol class="list-decimal pl-6 mb-6 space-y-2">
+                            <li>Connect to the Socket.io server</li>
+                            <li>Join a chat room</li>
+                            <li>Send and receive messages</li>
+                        </ol>
+
+                        <h4 class="font-semibold text-gray-700 mb-2">Connecting to Socket.io</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>// Using the Socket.io client library
+const socket = io('http://localhost:3001', {
+  withCredentials: true
+});</code></pre>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-700 mb-2">Joining a Chat Room</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>// Join a chat room
+socket.emit('join_chat', chatId);</code></pre>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-700 mb-2">Sending Messages</h4>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <pre class="language-javascript"><code>// Send a message
+socket.emit('send_message', {
+  chatId: 1,
+  message: 'Hello, world!',
+  token: 'YOUR_JWT_TOKEN'
+});</code></pre>
+                        </div>
+
+                        <h4 class="font-semibold text-gray-700 mb-2">Receiving Messages</h4>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <pre class="language-javascript"><code>// Listen for incoming messages
+socket.on('receive_message', (data) => {
+  console.log('New message:', data);
+  // data contains: msg_id, chat_id, message, timestamp
+});</code></pre>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                        <h2 class="text-xl font-bold">Shodix API</h2>
+                    </div>
+                    <p class="text-gray-400 max-w-md">
+                        A comprehensive e-commerce API for managing users, stores, products, carts, orders, and messaging.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">API</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#introduction" class="text-gray-400 hover:text-white transition-colors">Introduction</a></li>
+                            <li><a href="#authentication" class="text-gray-400 hover:text-white transition-colors">Authentication</a></li>
+                            <li><a href="#endpoints" class="text-gray-400 hover:text-white transition-colors">Endpoints</a></li>
+                            <li><a href="#models" class="text-gray-400 hover:text-white transition-colors">Data Models</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#websockets" class="text-gray-400 hover:text-white transition-colors">WebSockets</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">GitHub Repository</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Changelog</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center space-x-2">
+                                <i class="ti ti-mail text-gray-400"></i>
+                                <a href="mailto:support@shodix.com" class="text-gray-400 hover:text-white transition-colors">support@shodix.com</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="ti ti-brand-github text-gray-400"></i>
+                                <a href="#" class="text-gray-400 hover:text-white transition-colors">github.com/shodix</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="ti ti-brand-twitter text-gray-400"></i>
+                                <a href="#" class="text-gray-400 hover:text-white transition-colors">@shodix</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-500">
+                <p>&copy; 2024 Shodix API. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
