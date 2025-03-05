@@ -16,8 +16,6 @@
     "env": {
       "NODE_ENV": "production"
     },
-    "scripts": {
-      "install": "npm install sqlite3 --build-from-source=false"
-    }
+    "installCommand": "npm install sqlite3 --build-from-source=false"
   }
 }
