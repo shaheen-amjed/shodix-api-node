@@ -11,11 +11,5 @@
       "src": "/(.*)",
       "dest": "server.js"
     }
-  ],
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    },
-    "installCommand": "npm install sqlite3 --build-from-source=false"
-  }
+  ]
 }
