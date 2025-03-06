@@ -17,11 +17,31 @@ const server = http.createServer(app);
 // Initialize Socket.io for live messages
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
   }
+});
+
+// Enable CORS for all routes
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow requests from your frontend origin
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allow these HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allow these headers
+}));
+
+// Handle preflight requests for all routes
+app.options('*', cors());
+
+// Log incoming requests for debugging
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  if (req.method === 'OPTIONS') {
+    console.log('Preflight request detected');
+  }
+  next();
 });
 
 // Configure multer for file uploads
@@ -53,32 +73,25 @@ const upload = multer({
 });
 
 // Middleware
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // JWT Secret
 const JWT_SECRET = "shodixSecretKey2024";
-
 // Initialize Sequelize with SQLite
 const sequelize = new Sequelize({
-  dialect: 'mysql', // Use 'mysql' for TiDB (MySQL-compatible)
-  host: 'gateway01.eu-central-1.prod.aws.tidbcloud.com', // Host
-  port: 4000, // Port
-  username: 'SAFbYDGRTjNb3dp.root', // Username
-  password: 'CtM90sZgcvXgX5m7', // Password
-  database: 'test', // Database name
-  dialectModule: require('mysql2'), // Use mysql2 as the dialect module
-  dialectOptions: {
-    ssl: {
-      rejectUnauthorized: true, // Enable SSL (if required by TiDB Cloud)
-    },
-  },
-  logging: false, // Disable logging (or set to `console.log` for debugging)
+  dialect: 'sqlite',
+  storage: './project.sqlite',
+  logging: false,
 });
+
+
+
+// Define models and routes (keep your existing code here)...
+
+// Sync database and start server
+
+
 // Define models
 const Follow = sequelize.define('Follow', {
   id: {
@@ -410,129 +423,79 @@ const validateUsername = (username) => {
 };
 
 // Socket.io connection
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
-  
-  // Join a chat room
-  socket.on('join_chat', (chatId) => {
-    socket.join(`chat_${chatId}`);
-    console.log(`Socket ${socket.id} joined chat_${chatId}`);
-  });
-  
-  // Handle new messages
-  socket.on('send_message', async (data) => {
-    try {
-      const { chatId, message, token } = data;
-      
-      // Verify token
-      const decoded = jwt.verify(token, JWT_SECRET);
-      
-      // Create new message
-      const newMessage = await Messages.create({
-        chat_id: chatId,
-        msg: message
-      });
-      
-      // Broadcast to all clients in the room
-      io.to(`chat_${chatId}`).emit('receive_message', {
-        msg_id: newMessage.msg_id,
-        chat_id: newMessage.chat_id,
-        message: newMessage.msg,
-        timestamp: newMessage.timestamp
-      });
-      
-    } catch (error) {
-      console.error('Error sending message:', error);
-      socket.emit('error', { message: 'Failed to send message' });
-    }
-  });
-  
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
-});
 
 // Routes
 app.get('/', (req, res) => {
   res.json({ msg: 'I am running!' });
 });
 
-// Message routes
-app.get('/api/msg/get/:store_and_:user', verifyToken, async (req, res) => {
+const verifyJWTshaheen = (req, res, next) => {
+    const token = req.cookies.jwt;
+    if (!token) {
+        return res.status(401).json({ msg: "No token provided" });
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(400).json({ msg: "Invalid JWT token!" });
+        }
+        req.user = decoded;
+        next();
+    });
+};
+
+// GET /api/msg/get/:store_and_:user
+app.get('/api/msg/get/:store_and_:user', verifyJWTshaheen, async (req, res) => {
+  const { store, user } = req.params;
+  const { user_id, store_id } = req.user;
+
   try {
-    const { store, user } = req.params;
-    
-    let chat = await Chat.findOne({ where: { user, store } });
-    
-    if (!chat) {
-      chat = await Chat.create({ user, store });
-    }
-    
-    // Check if the requester is either the user or the store
-    if (
-      (req.user.user_id && req.user.username === user) || 
-      (req.user.store_id && req.user.store_name === store)
-    ) {
-      const messages = await Messages.findAll({
-        where: { chat_id: chat.chat_id },
-        order: [['timestamp', 'ASC']]
-      });
-      
-      return res.json(messages.map(msg => ({
-        msg_id: msg.msg_id,
-        chat_id: msg.chat_id,
-        message: msg.msg,
-        timestamp: msg.timestamp
-      })));
-    } else {
-      return res.status(403).json({ msg: 'You are not authorized to see these messages' });
-    }
+      let chat = await Chat.findOne({ where: { user, store } });
+
+      if (!chat) {
+          chat = await Chat.create({ user, store });
+      }
+
+      if ((user_id && user === chat.user) || (store_id && store === chat.store)) {
+          const messages = await Messages.findAll({
+              where: { chat_id: chat.chat_id },
+              order: [['timestamp', 'ASC']],
+          });
+          return res.status(200).json(messages);  // msg_to_json() غير موجود، نعيد البيانات مباشرة
+      } else {
+          return res.status(403).json({ msg: "You are not authorized to see these messages" });
+      }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: 'Server error', error: error.message });
+      console.error(error);
+      return res.status(500).json({ msg: "Internal server error" });
   }
 });
 
-app.post('/api/msg/add/:store_and_:user', verifyToken, async (req, res) => {
+// POST /api/msg/add/:store_and_:user
+app.post('/api/msg/add/:store_and_:user', verifyJWTshaheen, async (req, res) => {
+  const { store, user } = req.params;
+  const { msg } = req.body;
+  const { user_id, store_id } = req.user;
+
   try {
-    const { store, user } = req.params;
-    const { msg } = req.body;
-    
-    if (!msg) {
-      return res.status(400).json({ msg: 'Message content is required' });
-    }
-    
-    let chat = await Chat.findOne({ where: { user, store } });
-    
-    if (!chat) {
-      chat = await Chat.create({ user, store });
-    }
-    
-    // Check if the requester is either the user or the store
-    if (
-      (req.user.user_id && req.user.username === user) || 
-      (req.user.store_id && req.user.store_name === store)
-    ) {
-      const newMsg = await Messages.create({
-        chat_id: chat.chat_id,
-        msg
-      });
-      
-      // Emit the message to all clients in the chat room
-      io.to(`chat_${chat.chat_id}`).emit('receive_message', {
-        msg_id: newMsg.msg_id,
-        chat_id: newMsg.chat_id,
-        message: newMsg.msg,
-        timestamp: newMsg.timestamp
-      });
-      
-      return res.status(201).json({ msg: 'Sent successfully' });
-    } else {
-      return res.status(403).json({ msg: 'You are not authorized to send messages' });
-    }
+      if (!msg) {
+          return res.status(400).json({ msg: "Message content is required" });
+      }
+
+      let chat = await Chat.findOne({ where: { user, store } });
+      if (!chat) {
+          chat = await Chat.create({ user, store });
+      }
+
+      if ((user_id && user === chat.user) || (store_id && store === chat.store)) {
+          await Messages.create({ chat_id: chat.chat_id, msg, timestamp: new Date() });
+          return res.status(201).json({ msg: "Sent successfully" });
+      } else {
+          return res.status(403).json({ msg: "You are not authorized to send messages" });
+      }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: 'Server error', error: error.message });
+      console.error(error);
+      return res.status(500).json({ msg: "Internal server error" });
   }
 });
 
@@ -725,7 +688,7 @@ app.post('/api/user/log', async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: 'Incorrect username or password' });
     }
-    
+    console.log("Got a request")
     // Create JWT
     const token = jwt.sign({
       user_id: user.user_id,
@@ -1259,21 +1222,12 @@ app.post('/api/order/see', verifyToken, isStore, async (req, res) => {
 });
 
 // Get all products
-app.get('/api/product/all', async (req, res) => {
+app.get('/api/product/get/it/all', async (req, res) => {
   try {
     const products = await Product.findAll();
     
-    res.json(products.map(product => ({
-      product_id: product.product_id,
-      store_id: product.store_id,
-      store_name: product.store_name,
-      country: product.country,
-      name: product.name,
-      desc: product.desc,
-      price: product.price,
-      stock: product.stock,
-      img: product.img
-    })));
+    res.send(products)
+    console.log(products)
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: 'Server error', error: error.message });
