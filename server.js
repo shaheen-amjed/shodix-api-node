@@ -79,11 +79,20 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // JWT Secret
 const JWT_SECRET = "shodixSecretKey2024";
 // Initialize Sequelize with SQLite
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: ':memory:', // or ''
-  pool: { max: 1, idle: Infinity, maxUses: Infinity },
+const sequelize = new Sequelize('shodix_db', 'shodix', 'Qwe135poi246', {
+  host: 'mysql-shodix.alwaysdata.net',
+  dialect: 'mysql',
+  logging: false, // Set to true to see SQL logs in the console
 });
+
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Connected to AlwaysData MySQL database!');
+  } catch (error) {
+    console.error('❌ Connection failed:', error);
+  }
+})();
 
 
 
