@@ -17,7 +17,7 @@ const server = http.createServer(app);
 // Initialize Socket.io for live messages
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://shodix-front.vercel.app/",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
@@ -26,7 +26,7 @@ const io = new Server(server, {
 
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow requests from your frontend origin
+  origin: 'https://shodix-front.vercel.app', // Allow requests from your frontend origin
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allow these HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allow these headers
