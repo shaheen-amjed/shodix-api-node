@@ -17,7 +17,7 @@ const server = http.createServer(app);
 // Initialize Socket.io for live messages
 const io = new Server(server, {
   cors: {
-    origin: "https://shodix-front-production.up.railway.app",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
@@ -26,7 +26,7 @@ const io = new Server(server, {
 
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'https://shodix-front-production.up.railway.app', // Allow requests from your frontend origin
+  origin: 'http://localhost:5173', // Allow requests from your frontend origin
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // Allow these HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allow these headers
@@ -439,22 +439,28 @@ app.get('/', (req, res) => {
 });
 
 const verifyJWTshaheen = (req, res, next) => {
-    const token = req.cookies.jwt;
-    if (!token) {
-        return res.status(401).json({ msg: "No token provided" });
-    }
+  const authHeader = req.headers['authorization'];
+  console.log("Authorization header:", authHeader); // Debugging line
 
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-        if (err) {
-            return res.status(400).json({ msg: "Invalid JWT token!" });
-        }
-        req.user = decoded;
-        next();
-    });
+  const token = authHeader && authHeader.split(' ')[1]; // Extract the token from "Bearer <token>"
+  console.log("Extracted token:", token); // Debugging line
+
+  if (!token) {
+      return res.status(401).json({ msg: "No token provided" });
+  }
+  const tototo = 'shodixSecretKey2024'
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+      if (err) {
+          console.log("JWT verification error:", err); // Debugging line
+          return res.status(401).json({ msg: "Invalid JWT token!" });
+      }
+      req.user = decoded;
+      next();
+  });
 };
 
 // GET /api/msg/get/:store_and_:user
-app.get('/api/msg/get/:store_and_:user', verifyJWTshaheen, async (req, res) => {
+app.get('/api/msg/get/:store/and/:user', verifyJWTshaheen, async (req, res) => {
   const { store, user } = req.params;
   const { user_id, store_id } = req.user;
 
@@ -481,7 +487,7 @@ app.get('/api/msg/get/:store_and_:user', verifyJWTshaheen, async (req, res) => {
 });
 
 // POST /api/msg/add/:store_and_:user
-app.post('/api/msg/add/:store_and_:user', verifyJWTshaheen, async (req, res) => {
+app.post('/api/msg/add/:store/and/:user', verifyJWTshaheen, async (req, res) => {
   const { store, user } = req.params;
   const { msg } = req.body;
   const { user_id, store_id } = req.user;
@@ -514,7 +520,7 @@ app.post('/api/cart', verifyToken, isUser, async (req, res) => {
     const username = req.user.username;
     
     const cart = await Cart.findAll({ where: { username } });
-    
+
     if (!cart || cart.length === 0) {
       return res.status(404).json({ msg: 'No items found in your cart!' });
     }
